@@ -8,7 +8,7 @@ export default function AwardsPanel() {
     {
       year: '2021',
       title: '🥇 Teknofest National Finalist',
-      desc: 'AR mobile conferencing app for remote classrooms. Finalist among 600,000+ contestants.',
+      desc: 'AR mobile conferencing app for remote classrooms. Finalist among 100,000+ contestants.',
     },
     {
       year: '2023',
@@ -27,8 +27,8 @@ export default function AwardsPanel() {
     },
     {
       year: '2021–25',
-      title: '📘 IB Diploma 44/45 + CS Department Award ×3',
-      desc: 'IB Math HL 7, Physics HL 7, CS HL 7. CS Department Award given to one student per year — won it three consecutive years.',
+      title: '📘 IB Diploma + CS Department Award ×2',
+      desc: 'IB Math HL, Physics HL, CS HL. CS Department Award given to one student per year — won it two consecutive years.',
     },
     {
       year: '2016–25',

@@ -7,6 +7,7 @@ export default function ExperiencePanel() {
       points: [
         'Hands-on Scanning Tunnelling Microscopy for atomic-scale semiconductor observation',
         'Semiconductor design research under faculty supervision',
+        'Redesigning signal processing circuity for the STMs using FPGAs, microcontrollers and modern web interfaces',
       ],
     },
     {
@@ -39,6 +40,7 @@ export default function ExperiencePanel() {
       org: 'MUNDP · Koç School · Istanbul, Turkey',
       points: [
         'Helped run 800-person international MUN conference (25-year tradition)',
+        'Coordinated a 40-person team and school facilities such as catering and security',
         'Built custom web platform: participant tracking, badge printing, gate security scanning',
         'Managed sponsorships from Turkey\'s top consumer brands',
         'Also DJed the closing party (this is real)',

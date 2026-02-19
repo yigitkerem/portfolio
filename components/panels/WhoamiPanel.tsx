@@ -29,12 +29,12 @@ export default function WhoamiPanel() {
           value: 'Started "IT consulting" at age 9 at my mother\'s pharmacy in Erzincan — setting up CCTV, computers, and the Turkish Health Ministry\'s drug sale system because nobody else could. First paying clients at 10. Incorporated a UK Limited company at 15. Filed British taxes as a high schooler in Istanbul. Now studying the same semiconductor chips I\'ve been building products on for years — from the atomic level up.',
         },
         {
-          key: 'gpa_ib_scores',
-          value: 'UIUC: 4.0 · IB Diploma: 44/45 · Math HL: 7 · Physics HL: 7 · CS HL: 7',
+          key: 'gradesscores',
+          value: 'UIUC: 4.0 · IB Diploma: Math HL · Physics HL · CS HL',
         },
         {
           key: 'fun_facts',
-          value: '- Shipped 800kg of robotics equipment across the Atlantic<br />- DJed the closing ceremony of an 800-person MUN conference<br />- Asked for a domain name as a birthday gift in 6th grade<br />- Mentored middle schoolers to a robotics win without being there full-time',
+          value: '- Shipped 800kg of robotics equipment across the Atlantic in a commercial flight<br />- DJed the closing ceremony of an 800-person MUN conference<br />- Asked for a domain name as a birthday gift in 6th grade<br />- Mentored middle schoolers to a robotics win a robotics prize I never won',
         },
       ].map((block, i) => (
         <div key={i} className="bg-bg border border-border2 p-5 md:p-6 mb-4">

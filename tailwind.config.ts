@@ -29,7 +29,7 @@ const config: Config = {
       },
       fontFamily: {
         mono: ['JetBrains Mono', 'monospace'],
-        serif: ['Playfair Display', 'serif'],
+        serif: ['dashiell-fine', 'serif'],
       },
     },
   },

@@ -8,22 +8,22 @@ export default function WelcomePanel({ onCommand }: WelcomePanelProps) {
   return (
     <div>
       <pre className="text-green text-[11px] leading-tight mb-8 opacity-70">
-        {`╔═══════════════════════════════════════╗
-║   Y K O · P O R T F O L I O · O S    ║
-╚═══════════════════════════════════════╝`}
+        {`╔═════════════════════════════════════╗
+║   T H E · W O R L D · O F · Y K O   ║
+╚═════════════════════════════════════╝`}
       </pre>
       <div className="font-serif text-[clamp(36px,4vw,56px)] font-bold text-text-bright leading-tight mb-2">
-        Yigit Kerem<br />
+        Yiğit Kerem<br />
         <em className="italic text-green">Oktay.</em>
       </div>
       <div className="text-xs text-text-dim tracking-wider mb-8">
-        ECE @ UIUC · Founder, Skyfallen · Researcher, Lyding Group
+        ECE @ UIUC · Founder, The Skyfallen Company
       </div>
 
       <div className="grid grid-cols-4 gap-px bg-border border border-border my-6">
         {[
           { num: '9', label: 'Age started' },
-          { num: '100+', label: 'Clients' },
+          { num: '100+', label: 'Customers' },
           { num: '14+', label: 'Countries' },
           { num: '4.0', label: 'GPA' },
         ].map((stat, i) => (

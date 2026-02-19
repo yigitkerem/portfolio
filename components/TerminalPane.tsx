@@ -44,7 +44,7 @@ export default function TerminalPane({ onCommand, activePanel }: TerminalPanePro
       e.preventDefault()
       const val = input.toLowerCase().trim()
       if (!val) return
-      const COMMANDS = ['help', 'whoami', 'skills', 'experience', 'exp', 'awards', 'skyfallen', 'origin', 'contact', 'back', 'clear', 'ls', 'pwd', 'date', 'echo', 'neofetch', 'secret', 'uname', 'github', 'email']
+      const COMMANDS = ['help', 'whoami', 'skills', 'experience', 'exp', 'awards', 'skyfallen', 'origin', 'contact', 'back', 'cd', 'clear', 'ls', 'pwd', 'date', 'echo', 'neofetch', 'secret', 'uname', 'github', 'email']
       const match = COMMANDS.find(c => c.startsWith(val))
       if (match) {
         setInput(match)

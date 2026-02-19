@@ -2,7 +2,7 @@ export default function SkillsPanel() {
   const skillGroups = [
     {
       label: 'Languages',
-      tags: ['PHP', 'Swift', 'JavaScript / TypeScript', 'Assembly', 'Python', 'SQL', 'C'],
+      tags: ['PHP', 'Swift', 'JavaScript / TypeScript', 'Go', 'C/C++', 'Assembly', 'Python', 'SQL', 'C'],
     },
     {
       label: 'Web & Mobile',
@@ -10,19 +10,19 @@ export default function SkillsPanel() {
     },
     {
       label: 'Infrastructure & Data',
-      tags: ['Linux Sysadmin', 'Cisco', 'MySQL', 'PostgreSQL', 'HTTP API Design', 'Git', 'Server Administration'],
+      tags: ['Linux Sysadmin', 'Cisco', 'MySQL', 'PostgreSQL', 'HTTP API Design', 'Git', 'Server Administration', 'Docker', 'Kubernetes'],
     },
     {
       label: 'Hardware & Research',
-      tags: ['Scanning Tunnelling Microscopy', 'Semiconductor Design', 'Electronics Manufacturing', 'FRC Robotics', '3D Printing & CAD', 'Smart Building Design'],
+      tags: ['Scanning Tunnelling Microscopy', 'Semiconductor Design', 'Electronics Manufacturing', 'Robotics', '3D Printing & CAD', 'Smart Building Design'],
     },
     {
       label: 'Business',
-      tags: ['UK Incorporation', 'Tax Filing', 'Contract Drafting', 'Hiring & HR', 'UI/UX Design', 'SEO Optimization', 'International Logistics'],
+      tags: ['Company Incorporation', 'Globalisation', 'Fintech', 'Business Development', 'Tax & Regulatory Compliance', , 'UI/UX Design', 'SEO Optimization', 'International Logistics'],
     },
     {
       label: 'Current coursework @ UIUC',
-      tags: ['ECE 120 — Computing Systems', 'ECE 220 — Computer Systems & Programming', 'CS 173 — Discrete Structures', 'MATH 241 — Calculus III', 'PHYS 211 — Mechanics'],
+      tags: ['ECE 110 — Introduction to Electronics', 'ECE 120 — Introduction to Computing', 'ECE 220 — Computer Systems & Programming', 'CS 124 — Introduction to Computer Science', 'CS 173 — Discrete Structures', 'MATH 221 — Calculus I', 'MATH 231 — Calculus II', 'MATH 241 — Calculus III', 'PHYS 211 — Mechanics'],
     },
   ]
 

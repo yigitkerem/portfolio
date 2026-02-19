@@ -2,7 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+@import url('https://use.typekit.net/cfv7omw.css');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&display=swap');
+
 
 @layer base {
   :root {
@@ -83,4 +85,54 @@
   .scrollbar-light::-webkit-scrollbar-thumb:hover {
     background: #b91c1c;
   }
+}
+
+/* Opening animation */
+@keyframes opening-text {
+  0% {
+    opacity: 0;
+    letter-spacing: 0.5em;
+  }
+  40% {
+    opacity: 1;
+    letter-spacing: 0.2em;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes opening-cursor {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  60% {
+    opacity: 0;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-opening-text {
+  animation: opening-text 0.8s ease-out forwards;
+}
+
+.animate-opening-cursor {
+  animation: opening-cursor 1.2s step-end forwards;
 }

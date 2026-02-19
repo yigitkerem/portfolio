@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useMemo } from 'react'
 import TitleBar from '@/components/TitleBar'
 import TerminalPane from '@/components/TerminalPane'
 import DisplayPane from '@/components/DisplayPane'
@@ -22,6 +22,9 @@ export default function Home() {
   const [activePanel, setActivePanel] = useState('welcome')
   const [outputLines, setOutputLines] = useState<Array<{ text: string; className: string }>>([])
   const bootedRef = useRef(false)
+  const [openingComplete, setOpeningComplete] = useState(false)
+  const [overlayExiting, setOverlayExiting] = useState(false)
+  const overlayRef = useRef<HTMLDivElement>(null)
 
   const addLine = (text: string, className = 'output') => {
     setOutputLines((prev) => [...prev, { text, className }])
@@ -64,6 +67,7 @@ export default function Home() {
           ['contact', 'Get in touch'],
           ['neofetch', 'System info with Skyfallen branding'],
           ['back', 'Return to welcome screen'],
+          ['cd [dir]', 'Change directory (e.g. cd whoami)'],
           ['clear', 'Clear terminal output'],
           ['ls', 'List available sections'],
           ['date', 'Current date and time'],
@@ -117,6 +121,21 @@ export default function Home() {
         addLine('Returning to welcome screen...', 'dim')
         showPanel('welcome')
         break
+
+      case 'cd': {
+        const dir = parts[1]?.toLowerCase().trim()
+        const sections = ['whoami', 'skills', 'experience', 'awards', 'skyfallen', 'origin', 'contact']
+        if (!dir || dir === '~' || dir === '/' || dir === '..') {
+          addLine('Returning to home...', 'dim')
+          showPanel('welcome')
+        } else if (sections.includes(dir)) {
+          addLine(`Changing directory to ${dir}...`, 'dim')
+          showPanel(dir)
+        } else {
+          addLine(`cd: no such file or directory: ${escHtml(dir)}`, 'error')
+        }
+        break
+      }
 
       case 'contact':
         addLine('Routing packets to sksh...', 'dim')
@@ -211,8 +230,11 @@ export default function Home() {
         showPanel('welcome')
         break
 
-      case 'uname':
-        addLine('Skyfallen-Kernel 10.0 sksh #1 SMP Thu Feb 19 2026 x86_64 GNU/Linux')
+      case 'uname': {
+        const unameDate = new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }).replace(',', '')
+        addLine(`Skyfallen-Kernel 10.0 sksh #1 SMP ${unameDate} x86_64 GNU/Linux`)
+        break
+      }
         break
 
       case 'secret':
@@ -234,7 +256,7 @@ export default function Home() {
         break
 
       case 'sudo':
-        addLine('sksh is not in the sudoers file. This incident will be reported.', 'error')
+        addLine('guest is not in the sudoers file. This incident will be reported.', 'error')
         break
 
       case 'rm':
@@ -255,10 +277,10 @@ export default function Home() {
         if (parts[1] === 'blame') {
           addLine('All commits authored by: Yigit Kerem Oktay <yk@skfn.net>', 'dim')
         } else if (parts[1] === 'log') {
-          addLine('commit a3f9b2c (HEAD -> main) — "still shipping, 9 years later"')
+          addLine('commit a3f9b2c (HEAD -> main) — "still shipping, 10 years later"')
           addLine('commit 77e1d4a — "incorporated UK Ltd, age 15"')
           addLine('commit 221f993 — "first client, first invoice"')
-          addLine('commit 0000001 — "initial commit: pharmacy IT, age 9"')
+          addLine('commit 0000001 — "initial commit: pharmacy IT, age 10"')
         } else if (parts[1] === 'status') {
           addLine('On branch main')
           addLine('Your branch is up to date with \'origin/main\'.')
@@ -277,44 +299,43 @@ export default function Home() {
     blank()
   }
 
-  useEffect(() => {
-    // Prevent double execution in React Strict Mode
-    if (bootedRef.current) return
-    bootedRef.current = true
-
-    const bootLines = [
-      { text: 'sksh (Skyfallen Shell) v1.0.0', className: 'success' },
+  const bootLines = useMemo(() => {
+    const unameDate = new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }).replace(',', '')
+    return [
+      { text: `Skyfallen-Kernel 10.0 sksh #1 SMP ${unameDate} x86_64 GNU/Linux`, className: 'output' },
+      { text: 'sksh (skyfallen shell) v22.04.16', className: 'success' },
       { text: '─────────────────────────────────────', className: 'dim' },
       { text: 'Initializing biographical data...', className: 'dim' },
-      { text: '[  OK  ] Loaded: Skyfallen Company (2016–present)', className: 'output' },
+      { text: '[  OK  ] Loaded: The Skyfallen Company (2016–present)', className: 'output' },
       { text: '[  OK  ] Loaded: ECE @ UIUC (2025–present)', className: 'output' },
       { text: '[  OK  ] Loaded: Lyding Group semiconductor research', className: 'output' },
-      {
-        text: '[  OK  ] Verified: 100+ clients, 14+ countries, 4.0 GPA',
-        className: 'output',
-      },
-      {
-        text: '[  OK  ] Awards: Uber Hackathon ×1, Teknofest finalist, NSS 3rd place',
-        className: 'output',
-      },
+      { text: '[  OK  ] Verified: 100+ clients, 14+ countries, 4.0 GPA', className: 'output' },
+      { text: '[  OK  ] Awards: Uber Hackathon ×1, Teknofest finalist, NSS 3rd place', className: 'output' },
       { text: '─────────────────────────────────────', className: 'dim' },
-      {
-        text: 'All systems operational. Type <span style="color:var(--green)">help</span> to begin.',
-        className: 'success',
-      },
+      { text: 'All systems operational. Type <span style="color:var(--green)">help</span> to begin.', className: 'success' },
       { text: '', className: 'blank' },
     ]
-
-    let lineIdx = 0
-    function bootNext() {
-      if (lineIdx >= bootLines.length) return
-      const { text, className } = bootLines[lineIdx++]
-      addLine(text, className)
-      setTimeout(bootNext, lineIdx === 1 ? 100 : 80)
-    }
-
-    setTimeout(bootNext, 300)
   }, [])
+
+  // Run boot sequence in the real terminal, then fade overlay (display pane only)
+  useEffect(() => {
+    if (bootedRef.current) return
+    bootedRef.current = true
+    // After "sksh" intro (1s), stream boot lines into the actual terminal
+    const startBoot = setTimeout(() => {
+      let lineIdx = 0
+      function bootNext() {
+        if (lineIdx >= bootLines.length) {
+          setTimeout(() => setOverlayExiting(true), 500)
+          return
+        }
+        addLine(bootLines[lineIdx].text, bootLines[lineIdx].className)
+        lineIdx += 1
+        setTimeout(bootNext, lineIdx === 1 ? 120 : 70)
+      }
+      bootNext()
+    }, 1000)
+  }, [bootLines])
 
   const renderPanel = () => {
     switch (activePanel) {
@@ -339,8 +360,25 @@ export default function Home() {
 
   const showBackButton = activePanel !== 'welcome' && activePanel !== ''
 
+  const handleOverlayTransitionEnd = (e: React.TransitionEvent) => {
+    if (e.target === overlayRef.current && e.propertyName === 'opacity') {
+      setOpeningComplete(true)
+    }
+  }
+
+  // Safety: if overlay is exiting but transitionend never fires
+  useEffect(() => {
+    if (!overlayExiting) return
+    const fallback = setTimeout(() => setOpeningComplete(true), 800)
+    return () => clearTimeout(fallback)
+  }, [overlayExiting])
+
   return (
-    <div className={`grid grid-cols-1 md:grid-cols-[480px_1fr] grid-rows-[32px_1fr] h-screen w-full ${activePanel === 'origin' ? 'light-mode' : ''}`}>
+    <div
+      className={`grid grid-cols-1 md:grid-cols-[480px_1fr] grid-rows-[32px_1fr] h-screen w-full ${
+        activePanel === 'origin' ? 'light-mode' : ''
+      }`}
+    >
       <TitleBar activePanel={activePanel} />
       <div className={`${activePanel === 'origin' ? 'bg-gray-100 border-gray-300' : 'bg-terminal-bg border-border'} md:border-r flex flex-col overflow-hidden`}>
         <TerminalOutput lines={outputLines} activePanel={activePanel} />
@@ -348,6 +386,23 @@ export default function Home() {
       </div>
       <div className="hidden md:flex w-full overflow-hidden relative">
         <DisplayPane activePanel={activePanel}>{renderPanel()}</DisplayPane>
+        {/* Overlay only over display pane: sksh intro, then fades to reveal panel */}
+        <div
+          ref={overlayRef}
+          onTransitionEnd={handleOverlayTransitionEnd}
+          className={`absolute inset-0 z-10 flex flex-col items-center justify-center bg-terminal-bg transition-opacity duration-700 ease-out ${
+            overlayExiting ? 'opacity-0 pointer-events-none' : 'opacity-100'
+          }`}
+          style={{ transitionProperty: 'opacity' }}
+          aria-hidden={openingComplete}
+        >
+          <div className="flex flex-col items-center gap-4">
+            <div className="font-mono text-green text-lg md:text-xl tracking-widest opacity-0 animate-opening-text">
+              logging in as yko@skynux...
+            </div>
+            <div className="w-2 h-4 bg-green opacity-0 animate-opening-cursor" style={{ animationDelay: '400ms' }} />
+          </div>
+        </div>
       </div>
       {showBackButton && (
         <button

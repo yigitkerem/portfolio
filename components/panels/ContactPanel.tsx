@@ -1,7 +1,7 @@
 export default function ContactPanel() {
   const contacts = [
     { label: 'email', value: 'yk@skfn.net', href: 'mailto:yk@skfn.net' },
-    { label: 'phone', value: '217.318.1364' },
+    { label: 'phone', value: '888.448.SKFL', href: 'tel:18884487535' },
     { label: 'linkedin', value: 'linkedin.com/in/yigitkerem', href: 'https://linkedin.com/in/yigitkerem' },
     { label: 'github', value: 'github.com/yigitkerem', href: 'https://github.com/yigitkerem' },
     { label: 'company', value: 'withskyfallen.com', href: 'https://withskyfallen.com' },
