@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+
+@layer base {
+  :root {
+    --bg: #0d0f0e;
+    --terminal-bg: #080a09;
+    --panel-bg: #0f1210;
+    --border: #1a1f1c;
+    --border2: #232b27;
+    --green: #39ff7a;
+    --green-dim: #1a7a3d;
+    --green-glow: rgba(57, 255, 122, 0.08);
+    --amber: #ffb347;
+    --cyan: #38e8d8;
+    --red: #ff5f5f;
+    --blue: #5b9cf6;
+    --muted: #3a4a3f;
+    --muted2: #2a3530;
+    --text: #b8c4bc;
+    --text-bright: #e0ece4;
+    --text-dim: #5a6b60;
+  }
+
+  * {
+    @apply box-border m-0 p-0;
+  }
+
+  html,
+  body {
+    @apply h-full overflow-hidden;
+  }
+
+  body {
+    @apply bg-bg text-text font-mono text-[13px] leading-relaxed;
+    cursor: text;
+  }
+
+  /* CRT scanline effect */
+  body::after {
+    content: '';
+    @apply fixed inset-0 pointer-events-none z-[9999];
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.03) 0px,
+      rgba(0, 0, 0, 0.03) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+    opacity: 0.4;
+  }
+}
+
+@layer utilities {
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    @apply bg-muted2;
+  }
+
+  .scrollbar-light::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  .scrollbar-light::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-light::-webkit-scrollbar-thumb {
+    background: #dc2626;
+    border-radius: 3px;
+  }
+
+  .scrollbar-light::-webkit-scrollbar-thumb:hover {
+    background: #b91c1c;
+  }
+}
