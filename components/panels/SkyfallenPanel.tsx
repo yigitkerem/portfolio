@@ -1,6 +1,11 @@
 export default function SkyfallenPanel() {
   const products = [
     {
+      name: 'The Skyfallen Company ↗',
+      desc: 'Software products & consulting services for enterprises and SMBs.',
+      link: 'https://withskyfallen.com',
+    },
+    {
       name: 'Skyfallen Success Manager ↗',
       desc: 'Client-facing SaaS portal — project requests, progress tracking, support, and payments. Built with Laravel, React, MySQL, SAML.',
       link: 'https://success.withskyfallen.com',
@@ -9,11 +14,6 @@ export default function SkyfallenPanel() {
       name: 'Skyfallen ONE ↗',
       desc: 'Single Sign-On (SSO) solution for the world of Skyfallen. Make signing in fun.',
       link: 'https://skyfallen.one',
-    },
-    {
-      name: 'SkyTrac · pharmacodex · Skyfallen Cloud ↗',
-      desc: 'Retail software products serving healthcare, hospitality, and SMBs.',
-      link: 'https://withskyfallen.com/retail',
     },
     {
       name: 'The Skyfallen Foundation· KüçükRobotçuk · The Skyfallen (blog) · 50+ open source tools ↗',

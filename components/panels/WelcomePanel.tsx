@@ -13,8 +13,7 @@ export default function WelcomePanel({ onCommand }: WelcomePanelProps) {
 ╚═════════════════════════════════════╝`}
       </pre>
       <div className="font-serif text-[clamp(36px,4vw,56px)] font-bold text-text-bright leading-tight mb-2">
-        Yiğit Kerem<br />
-        <em className="italic text-green">Oktay.</em>
+        Yiğit Kerem <em className="italic text-green">Oktay.</em>
       </div>
       <div className="text-xs text-text-dim tracking-wider mb-8">
         ECE @ UIUC · Founder, The Skyfallen Company
@@ -50,6 +49,8 @@ export default function WelcomePanel({ onCommand }: WelcomePanelProps) {
           { cmd: 'skyfallen', desc: 'The company' },
           { cmd: 'origin', desc: 'The real story' },
           { cmd: 'contact', desc: 'Get in touch' },
+          { cmd: 'resume', desc: 'PDF resume' },
+          { cmd: 'blog', desc: 'kucukrobotcuk' },
           { cmd: 'help', desc: 'All commands' },
         ].map((item) => (
           <div

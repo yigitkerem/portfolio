@@ -5,6 +5,7 @@ import TitleBar from '@/components/TitleBar'
 import TerminalPane from '@/components/TerminalPane'
 import DisplayPane from '@/components/DisplayPane'
 import TerminalOutput from '@/components/TerminalOutput'
+import SuggestedCommands from '@/components/SuggestedCommands'
 import WelcomePanel from '@/components/panels/WelcomePanel'
 import WhoamiPanel from '@/components/panels/WhoamiPanel'
 import SkillsPanel from '@/components/panels/SkillsPanel'
@@ -25,6 +26,10 @@ export default function Home() {
   const [openingComplete, setOpeningComplete] = useState(false)
   const [overlayExiting, setOverlayExiting] = useState(false)
   const overlayRef = useRef<HTMLDivElement>(null)
+  const [showMobileOverlay, setShowMobileOverlay] = useState(false)
+  const mobileOverlayTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const MOBILE_OVERLAY_DELAY_MS = 2500
 
   const addLine = (text: string, className = 'output') => {
     setOutputLines((prev) => [...prev, { text, className }])
@@ -66,7 +71,7 @@ export default function Home() {
           ['origin', 'The real story — in Turkish'],
           ['contact', 'Get in touch'],
           ['neofetch', 'System info with Skyfallen branding'],
-          ['back', 'Return to welcome screen'],
+          ['back / home', 'Return to welcome screen'],
           ['cd [dir]', 'Change directory (e.g. cd whoami)'],
           ['clear', 'Clear terminal output'],
           ['ls', 'List available sections'],
@@ -74,6 +79,8 @@ export default function Home() {
           ['echo [text]', 'Print text to terminal'],
           ['github', 'Open GitHub profile'],
           ['email', 'Open email client'],
+          ['resume', 'Open PDF resume in a new tab'],
+          ['kucukrobotcuk / blog', 'Open kucukrobotcuk blog'],
         ].forEach(([cmd, desc]) => {
           addLine(
             `  <span style="color:var(--green);width:120px;display:inline-block">${cmd.padEnd(16, ' ')}</span><span style="color:var(--text-dim)">${desc}</span>`
@@ -118,6 +125,7 @@ export default function Home() {
         break
 
       case 'back':
+      case 'home':
         addLine('Returning to welcome screen...', 'dim')
         showPanel('welcome')
         break
@@ -198,6 +206,24 @@ export default function Home() {
           'success'
         )
         window.location.href = 'mailto:yk@skfn.net'
+        break
+
+      case 'resume':
+      case 'cv':
+        addLine(
+          'Opening <span style="color:var(--green)">resume.pdf</span> in a new tab...',
+          'success'
+        )
+        window.open('/resume.pdf', '_blank')
+        break
+
+      case 'kucukrobotcuk':
+      case 'blog':
+        addLine(
+          'Opening <a href="https://kucukrobotcuk.com" target="_blank" style="color:var(--green)">kucukrobotcuk.com</a>...',
+          'success'
+        )
+        window.open('https://kucukrobotcuk.com', '_blank')
         break
 
       case 'neofetch':
@@ -360,6 +386,25 @@ export default function Home() {
 
   const showBackButton = activePanel !== 'welcome' && activePanel !== ''
 
+  // On mobile: delay showing the panel overlay so the command is visible in the terminal first
+  useEffect(() => {
+    if (mobileOverlayTimeoutRef.current) {
+      clearTimeout(mobileOverlayTimeoutRef.current)
+      mobileOverlayTimeoutRef.current = null
+    }
+    if (activePanel === 'welcome' || activePanel === '') {
+      setShowMobileOverlay(false)
+      return
+    }
+    mobileOverlayTimeoutRef.current = setTimeout(() => {
+      setShowMobileOverlay(true)
+      mobileOverlayTimeoutRef.current = null
+    }, MOBILE_OVERLAY_DELAY_MS)
+    return () => {
+      if (mobileOverlayTimeoutRef.current) clearTimeout(mobileOverlayTimeoutRef.current)
+    }
+  }, [activePanel])
+
   const handleOverlayTransitionEnd = (e: React.TransitionEvent) => {
     if (e.target === overlayRef.current && e.propertyName === 'opacity') {
       setOpeningComplete(true)
@@ -380,11 +425,15 @@ export default function Home() {
       }`}
     >
       <TitleBar activePanel={activePanel} />
-      <div className={`${activePanel === 'origin' ? 'bg-gray-100 border-gray-300' : 'bg-terminal-bg border-border'} md:border-r flex flex-col overflow-hidden`}>
+      <div className={`${activePanel === 'origin' ? 'bg-gray-100 border-gray-300' : 'bg-terminal-bg border-border'} md:border-r flex flex-col overflow-hidden min-h-0`}>
         <TerminalOutput lines={outputLines} activePanel={activePanel} />
+        {activePanel === 'welcome' && (
+          <SuggestedCommands onCommand={runCommand} activePanel={activePanel} />
+        )}
         <TerminalPane onCommand={runCommand} activePanel={activePanel} />
       </div>
-      <div className="hidden md:flex w-full overflow-hidden relative">
+      {/* Desktop: panel in second column. Mobile: panel shown as full-screen overlay when a command is run. */}
+      <div className="hidden md:flex min-h-0 overflow-hidden w-full h-full relative">
         <DisplayPane activePanel={activePanel}>{renderPanel()}</DisplayPane>
         {/* Overlay only over display pane: sksh intro, then fades to reveal panel */}
         <div
@@ -404,15 +453,48 @@ export default function Home() {
           </div>
         </div>
       </div>
+      {/* Mobile: full-screen panel overlay after a short delay; animates in with slide-up + fade */}
+      {showBackButton && (
+        <div
+          className={`fixed inset-0 z-40 md:hidden flex flex-col transition-all duration-300 ease-out ${
+            activePanel === 'origin' ? 'bg-white' : 'bg-panel-bg'
+          } ${
+            showMobileOverlay
+              ? 'opacity-100 translate-y-0 pointer-events-auto'
+              : 'opacity-0 translate-y-full pointer-events-none'
+          }`}
+          aria-modal
+          role="dialog"
+          aria-hidden={!showMobileOverlay}
+        >
+          <div className="flex-1 min-h-0 overflow-hidden">
+            <DisplayPane activePanel={activePanel}>{renderPanel()}</DisplayPane>
+          </div>
+          <div className="flex-shrink-0 p-4 border-t border-border">
+            <button
+              type="button"
+              onClick={() => runCommand('back')}
+              className={`w-full py-3 font-medium text-sm rounded ${
+                activePanel === 'origin'
+                  ? 'bg-red-600 text-white hover:bg-red-700'
+                  : 'bg-bg border border-border2 text-green hover:border-green'
+              }`}
+            >
+              ← Back to terminal
+            </button>
+          </div>
+        </div>
+      )}
+      {/* Desktop: floating Back button */}
       {showBackButton && (
         <button
           onClick={() => runCommand('back')}
-          className={`fixed bottom-6 right-6 px-4 md:px-5 py-2 md:py-3 transition-all z-50 font-medium text-sm md:text-base ${
+          className={`hidden md:block fixed bottom-6 right-6 px-4 md:px-5 py-2 md:py-3 transition-all z-50 font-medium text-sm md:text-base ${
             activePanel === 'origin'
               ? 'bg-red-600 text-white hover:bg-red-700 border-2 border-red-800'
               : 'bg-bg border border-border2 text-green hover:border-green hover:bg-green-glow'
           }`}
-          style={activePanel === 'origin' ? { 
+          style={activePanel === 'origin' ? {
             backgroundColor: '#dc2626',
             color: '#ffffff',
             borderColor: '#991b1b',
